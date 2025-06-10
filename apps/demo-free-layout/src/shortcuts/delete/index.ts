@@ -68,11 +68,11 @@ export class DeleteShortcut implements ShortcutsHandler {
    */
   private isValid(nodes: WorkflowNodeEntity[]): boolean {
     const hasSystemNodes = nodes.some((n) =>
-      [WorkflowNodeType.Start, WorkflowNodeType.End].includes(n.flowNodeType as WorkflowNodeType)
+      [WorkflowNodeType.Start].includes(n.flowNodeType as WorkflowNodeType)
     );
     if (hasSystemNodes) {
       Toast.error({
-        content: 'Start or End node cannot be deleted',
+        content: 'Start node cannot be deleted',
         showClose: false,
       });
       return false;

@@ -1,13 +1,16 @@
+import { nanoid } from 'nanoid';
+
 import { FlowNodeRegistry } from '../../typings';
 import iconEnd from '../../assets/icon-end.jpg';
 import { formMeta } from './form-meta';
 import { WorkflowNodeType } from '../constants';
 
+let index = 0;
 export const EndNodeRegistry: FlowNodeRegistry = {
   type: WorkflowNodeType.End,
   meta: {
-    deleteDisable: true,
-    copyDisable: true,
+    deleteDisable: false,
+    copyDisable: false,
     defaultPorts: [{ type: 'input' }],
     size: {
       width: 360,
@@ -24,9 +27,26 @@ export const EndNodeRegistry: FlowNodeRegistry = {
    */
   formMeta,
   /**
-   * End Node cannot be added
+   * End Node can be added
    */
   canAdd() {
-    return false;
+    return true;
+  },
+  onAdd() {
+    return {
+      id: `end_${nanoid(5)}`,
+      type: 'end',
+      data: {
+        title: `End_${++index}`,
+        inputs: {
+          type: 'object',
+          properties: {
+            result: {
+              type: 'string',
+            },
+          },
+        },
+      },
+    };
   },
 };

@@ -59,19 +59,66 @@ export const LoopNodeRegistry: FlowNodeRegistry = {
     expandable: false, // disable expanded
   },
   onAdd() {
+    const uid = nanoid(5)
     return {
-      id: `loop_${nanoid(5)}`,
+      id: `loop_${uid}`,
       type: 'loop',
       data: {
         title: `Loop_${++index}`,
+        outputs: {
+          type: 'object',
+          properties: {
+            result: {
+              type: 'string',
+            },
+          },
+        },
       },
+      blocks: [{
+        "id": `start_${uid}`,
+        "type": "start",
+        "meta": { "isStart": false, "position": { "x": 0, "y": 125 } },
+        "data": {
+          "title": "Start",
+          "outputs": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "key": 12,
+                "name": "query",
+                "type": "string",
+                "extra": { "index": 1 },
+                "isPropertyRequired": false,
+              }
+            },
+            "required": [],
+          },
+        },
+      },
+      {
+        "id": `end_${uid}`,
+        "type": "end",
+        "meta": { "position": { "x": 500, "y": 125 } },
+        "data": {
+          "title": "End",
+          "outputs": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "string",
+              }
+            },
+          },
+        },
+      }],
+      edges: [{ "sourceNodeID": `start_${uid}`, "targetNodeID": `end_${uid}` }],
     };
   },
   formMeta: {
     ...defaultFormMeta,
     render: LoopFormRender,
-    effect: {
-      batchFor: provideBatchInputEffect,
-    },
+    // effect: {
+    //   batchFor: provideBatchInputEffect,
+    // },
   },
 };
