@@ -29,14 +29,6 @@ export const LLMNodeRegistry: FlowNodeRegistry = {
             type: 'constant',
             content: 'gpt-3.5-turbo',
           },
-          apiKey: {
-            type: 'constant',
-            content: 'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-          },
-          apiHost: {
-            type: 'constant',
-            content: 'https://mock-ai-url/api/v3',
-          },
           temperature: {
             type: 'constant',
             content: 0.5,
@@ -52,15 +44,9 @@ export const LLMNodeRegistry: FlowNodeRegistry = {
         },
         inputs: {
           type: 'object',
-          required: ['modelName', 'apiKey', 'apiHost', 'temperature', 'prompt'],
+          required: ['modelName', 'temperature', 'prompt'],
           properties: {
             modelName: {
-              type: 'string',
-            },
-            apiKey: {
-              type: 'string',
-            },
-            apiHost: {
               type: 'string',
             },
             temperature: {
