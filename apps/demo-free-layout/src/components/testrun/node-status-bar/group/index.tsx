@@ -14,7 +14,18 @@ interface NodeStatusGroupProps {
   disableCollapse?: boolean;
 }
 
-const isObjectHasContent = (obj: any = {}): boolean => Object.keys(obj).length > 0;
+const isObjectHasContent = (obj: any = {}): boolean => {
+  if (obj === null || obj === undefined) {
+    return false;
+  }
+  // if (Array.isArray(obj)) {
+  //   return obj.length > 0;
+  // }
+  if (typeof obj === 'object') {
+    return Object.keys(obj).length > 0;
+  }
+  return true;
+};
 
 export const NodeStatusGroup: FC<NodeStatusGroupProps> = ({
   title,
