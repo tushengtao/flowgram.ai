@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { useRefresh } from '@flowgram.ai/free-layout-editor';
 import { useClientContext } from '@flowgram.ai/free-layout-editor';
-import { Tooltip, IconButton, Divider } from '@douyinfe/semi-ui';
+import {Tooltip, IconButton, Divider, Button} from '@douyinfe/semi-ui';
 import { IconUndo, IconRedo } from '@douyinfe/semi-icons';
 
 import { TestRunButton } from '../testrun/testrun-button';
@@ -19,7 +19,7 @@ import { Comment } from './comment';
 import { AutoLayout } from './auto-layout';
 
 export const DemoTools = () => {
-  const { history, playground } = useClientContext();
+  const { document, history, playground } = useClientContext();
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
   const [minimapVisible, setMinimapVisible] = useState(true);
@@ -71,6 +71,8 @@ export const DemoTools = () => {
         <AddNode disabled={playground.config.readonly} />
         <Divider layout="vertical" style={{ height: '16px' }} margin={3} />
         <TestRunButton disabled={playground.config.readonly} />
+        <Button onClick={() => console.log("保存编排json", document.toJSON())}>保存</Button>
+
       </ToolSection>
     </ToolContainer>
   );
