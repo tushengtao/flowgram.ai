@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import {FC, useEffect, useRef, useState} from 'react';
 
 import { WorkflowInputs, WorkflowOutputs } from '@flowgram.ai/runtime-interface';
 import { useService } from '@flowgram.ai/free-layout-editor';
@@ -14,10 +14,13 @@ interface TestRunSideSheetProps {
 }
 
 export const TestRunSideSheet: FC<TestRunSideSheetProps> = ({ visible, onCancel }) => {
-  const runtimeService = useService(WorkflowRuntimeService);
+
+    const jsonViewerRef = useRef<any>(null);
+
+    const runtimeService = useService(WorkflowRuntimeService);
   const [isRunning, setRunning] = useState(false);
-  const [value, setValue] = useState<string>(`{}`);
-  const [error, setError] = useState<string | undefined>();
+    const initialValue = `{"query":""}`;
+    const [error, setError] = useState<string | undefined>();
   const [result, setResult] = useState<
     | {
         inputs: WorkflowInputs;
@@ -35,7 +38,10 @@ export const TestRunSideSheet: FC<TestRunSideSheetProps> = ({ visible, onCancel 
     setError(undefined);
     setRunning(true);
     try {
-      await runtimeService.taskRun(value);
+        // 通过 ref 获取当前值，而不是通过 state
+        const currentValue = jsonViewerRef.current?.getValue() || '{}';
+        console.log('测试运行的currentValue', currentValue);
+      await runtimeService.taskRun(currentValue);
     } catch (e: any) {
       setError(e.message);
     }
@@ -43,7 +49,6 @@ export const TestRunSideSheet: FC<TestRunSideSheetProps> = ({ visible, onCancel 
 
   const onClose = async () => {
     await runtimeService.taskCancel();
-    setValue(`{}`);
     setRunning(false);
     onCancel();
   };
@@ -91,7 +96,11 @@ export const TestRunSideSheet: FC<TestRunSideSheetProps> = ({ visible, onCancel 
       >
         Input
       </div>
-      <JsonViewer showSearch={false} height={300} value={value} onChange={setValue} />
+        <Button onClick={() => jsonViewerRef.current.format()}>格式化</Button>
+
+        <JsonViewer ref={jsonViewerRef} showSearch={false} height={300} value={initialValue}
+                  options={{ formatOptions: { tabSize: 4, insertSpaces: true, eol: '\n' } }}
+      />
       <div
         style={{
           color: 'red',
