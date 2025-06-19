@@ -72,6 +72,8 @@ export const DemoTools = () => {
         <Divider layout="vertical" style={{ height: '16px' }} margin={3} />
         <TestRunButton disabled={playground.config.readonly} />
         <Button onClick={() => console.log("保存编排json", document.toJSON())}>保存</Button>
+        <Button onClick={() => console.log("返回主界面")}>返回主界面</Button>
+
 
       </ToolSection>
     </ToolContainer>
